@@ -167,8 +167,8 @@ async function initializeDatabase() {
         try {
           const output = execSync(
             `${
-              isDocker ? `source ~/.bashrc && micromamba run -n mmgis ` : ``
-            }pypgstac migrate`,
+              isDocker ? `` : ``
+            }/home/aviris/miniforge3/envs/mmgis/bin/pypgstac migrate`,
             {
               env: {
                 PYTHONUTF8: 1,
