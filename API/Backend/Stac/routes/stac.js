@@ -18,9 +18,9 @@ router.get("/collections", function (req, res, next) {
   const fullQueryString = queryString ? `?${queryString}` : "";
 
   fetch(
-    `http://${
-      process.env.IS_DOCKER === "true" ? "stac-fastapi" : "localhost"
-    }:${process.env.STAC_PORT || 8881}/collections${fullQueryString}`,
+    `http://${process.env.STAC_HOST || "localhost"}:${
+      process.env.STAC_PORT || 8881
+    }/collections${fullQueryString}`,
     {
       method: "GET",
       headers: { "content-type": "application/json" },
@@ -111,9 +111,9 @@ router.get("/collections", function (req, res, next) {
 router.get("/collections/:collection/export", async function (req, res, next) {
   const { collection } = req.params;
 
-  const stacUrl = `http://${
-    process.env.IS_DOCKER === "true" ? "stac-fastapi" : "localhost"
-  }:${process.env.STAC_PORT || 8881}`;
+  const stacUrl = `http://${process.env.STAC_HOST || "localhost"}:${
+    process.env.STAC_PORT || 8881
+  }`;
 
   try {
     // Fetch collection metadata
