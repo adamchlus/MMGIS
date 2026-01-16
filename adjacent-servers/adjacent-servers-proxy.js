@@ -10,7 +10,9 @@ function initAdjacentServersProxy(app, isDocker, ensureAdmin) {
   // Proxies
   //// STAC
   if (process.env.WITH_STAC === "true") {
-    const stacTarget = `http://localhost:${process.env.STAC_PORT || 8881}`;
+    const stacTarget = `http://${isDocker ? "stac-fastapi" : "localhost"}:${
+      process.env.STAC_PORT || 8881
+    }`;
     app.use(
       `${process.env.ROOT_PATH || ""}/stac`,
       ensureAdmin(false, false, true), // true to allow all GETs - others require admin auth
@@ -193,7 +195,7 @@ function setupCustomAdjacentServers(app, isDocker, ensureAdmin) {
 function setupCustomAdjacentServer(app, isDocker, ensureAdmin, config) {
   const { routeName, serviceName, port } = config;
 
-  const target = `http://${isDocker ? serviceName : "localhost"}:${port}`;
+  const target = `http://${serviceName}:${port}`;
   const routePath = `${process.env.ROOT_PATH || ""}/${routeName}`;
 
   app.use(
