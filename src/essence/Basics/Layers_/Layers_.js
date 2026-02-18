@@ -1152,9 +1152,9 @@ const L_ = {
 
         ToolController_.notifyActiveTool('setActiveFeature', L_.activeFeature)
 
-        if (!L_.activeFeature) {
-            L_.clearVectorLayerInfo()
-        }
+        // if (!L_.activeFeature) {
+        //     L_.clearVectorLayerInfo()
+        // }
     },
     highlight(layer, forceColor) {
         if (layer == null) return
