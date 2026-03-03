@@ -197,7 +197,7 @@ function setupCustomAdjacentServers(app, isDocker, ensureAdmin) {
 function setupCustomAdjacentServer(app, isDocker, ensureAdmin, config) {
   const { routeName, serviceName, port } = config;
 
-  const target = `http://${isDocker ? serviceName : "localhost"}:${port}`;
+  const target = `http://${serviceName}:${port}`;
   const routePath = `${process.env.ROOT_PATH || ""}/${routeName}`;
 
   app.use(

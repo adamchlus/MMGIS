@@ -609,8 +609,44 @@ var InfoTool = {
 
         $('#infoToolData li').off('click')
         $('#infoToolData li').on('click', function () {
-            $(this).toggleClass('expand')
+            const key = $(this).find('> div').eq(0).text().replace(/:$/, '')
+            const value = $(this).find('> div').eq(1).text().trim()
+            console.log('Clicked value:', value)
+
+            console.log('Starts with /', value.startsWith('/'))
+
+            if (!value.startsWith('/')) return
+
+            ConfirmationModal.prompt(
+                'Confirm downlink',
+                (proceed) => {
+                    if (!proceed) return
+
+                    fetch('/rtsp/info-click', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            layerName: InfoTool.currentLayerName,
+                            featureIndex: InfoTool.activeFeatureI,
+                            fieldKey: key,
+                            fieldValue: value,
+                        }),
+                    })
+                    .then(() => {
+                        if ($('#infoToolDownlinkNotify').length === 0) {
+                            $('body').append('<div id="infoToolDownlinkNotify"></div>')
+                        }
+                        $('#infoToolDownlinkNotify').text('Downlinking: ' + value)
+                        $('#infoToolDownlinkNotify').css('opacity', '1')
+                        setTimeout(() => {
+                            $('#infoToolDownlinkNotify').css('opacity', '0')
+                        }, 1500)
+                    })
+                }
+            )
         })
+
+
 
         $('#infoToolFilter > input').val(InfoTool.filterString)
         if (InfoTool.filterString.length > 0) {
